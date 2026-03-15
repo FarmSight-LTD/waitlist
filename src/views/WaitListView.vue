@@ -15,7 +15,7 @@ import farm from '@/assets/img/habanero-farm.jpeg'
         </span>
       </div>
       <div class="flex flex-col gap-2 items-center mt-4">
-        <h1 class="text-4xl font-bold">Join the Future of Farming</h1>
+        <h1 class="text-xl md:text-4xl font-bold">Join the Future of Farming</h1>
         <p class="text-sm text-gray-600 text-center">
           Be among the first to eliminate guesswork and gain real-time market intelligence.<br />
           Secure your spot on the FarmSight waitlist.
