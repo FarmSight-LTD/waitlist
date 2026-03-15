@@ -47,17 +47,17 @@ import farm from '@/assets/img/habanero-farm.jpeg'
       </form>
       <div class="flex md:flex-row flex-col gap-10 mt-16">
         <FeaturesCard
-          icon="user"
+          icon="lock-open"
           title="Prority Access"
           description="Be among the first to eliminate guesswork and gain real-time market intelligence."
         />
         <FeaturesCard
-          icon="user"
+          icon="money-bill"
           title="Founder Pricing"
           description="Lock in special introductory pricing for early members."
         />
         <FeaturesCard
-          icon="user"
+          icon="chart-line"
           title="Exclusive Insight"
           description="Recieve weekly updates on market trends and insights."
         />
@@ -69,3 +69,28 @@ import farm from '@/assets/img/habanero-farm.jpeg'
     </div>
   </div>
 </template>
+
+<!-- 
+<script setup>
+import { ref } from 'vue';
+import axios from 'axios';
+
+const formData = ref({ name: '', email: '' });
+const webAppUrl = 'YOUR_WEBAPP_URL'; // Replace with your URL
+
+const submitForm = async () => {
+  try {
+    await axios.post(webAppUrl, new URLSearchParams(formData.value).toString(), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
+    alert('Form submitted successfully!');
+    formData.value = { name: '', email: '' }; // Reset form
+  } catch (error) {
+    console.error('Error submitting form:', error);
+    alert('Failed to submit form.');
+  }
+};
+</script>
+-->
