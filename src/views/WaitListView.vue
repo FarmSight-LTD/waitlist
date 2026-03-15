@@ -1,6 +1,45 @@
 <script setup>
 import FeaturesCard from '@/components/FeaturesCard.vue'
 import farm from '@/assets/img/habanero-farm.jpeg'
+import axios from 'axios'
+import { reactive, ref } from 'vue'
+
+const formData = reactive({
+  email: '',
+  isLoading: false,
+})
+
+const successMessage = ref('')
+const errorMessage = ref('')
+
+const SCRIPT_URL =
+  'https://script.google.com/macros/s/AKfycbwV5AlayxDAOxc3D1_1FEJiNkvItGWYlnnpMeU8wYZ_OdBqkJTpWpbM9YnXiPwXoY57Ng/exec'
+
+const submitForm = async () => {
+  successMessage.value = ''
+  errorMessage.value = ''
+
+  if (!formData.email.trim()) {
+    errorMessage.value = 'Please enter your email address.'
+    return
+  }
+
+  formData.isLoading = true
+  try {
+    const params = new URLSearchParams({ email: formData.email })
+    const response = await axios.post(SCRIPT_URL, params.toString(), {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    })
+    console.log(response.data)
+    successMessage.value = "You're on the list! We'll be in touch soon."
+    formData.email = ''
+  } catch (error) {
+    console.error(error)
+    errorMessage.value = 'Something went wrong. Please try again.'
+  } finally {
+    formData.isLoading = false
+  }
+}
 </script>
 
 <template>
@@ -22,27 +61,38 @@ import farm from '@/assets/img/habanero-farm.jpeg'
         </p>
       </div>
       <!-- Input Field -->
-      <form action="" class="mt-5">
+      <form @submit.prevent="submitForm" class="mt-5">
         <div
           class="flex gap-2 items-center mt-4 border border-gray-200 shadow rounded-lg px-1 py-1"
         >
           <div class="flex gap-2 items-center bg-white">
             <i class="pi pi-envelope text-gray-400 pl-2"></i>
             <input
-              type="text"
+              v-model="formData.email"
+              type="email"
               placeholder="Enter your email"
               class="outline-none text-sm max-w-2/3"
             />
           </div>
           <button
             type="submit"
-            class="flex gap-2 items-center bg-green-900 text-white text-sm px-6 py-2 rounded-lg"
+            :disabled="formData.isLoading"
+            class="flex gap-2 items-center bg-green-900 text-white text-sm px-6 py-2 rounded-lg disabled:opacity-60"
           >
-            Join Waitlist <i class="pi pi-arrow-right" style="font-size: 0.7rem"></i>
+            <span v-if="formData.isLoading">Sending...</span>
+            <span v-else
+              >Join Waitlist <i class="pi pi-arrow-right" style="font-size: 0.7rem"></i
+            ></span>
           </button>
         </div>
         <p class="text-xs text-gray-400 text-center mt-4">
           No spam. Only essential updates for early members.
+        </p>
+        <p v-if="successMessage" class="text-xs text-green-600 text-center mt-2 font-medium">
+          {{ successMessage }}
+        </p>
+        <p v-if="errorMessage" class="text-xs text-red-500 text-center mt-2 font-medium">
+          {{ errorMessage }}
         </p>
       </form>
       <div class="flex md:flex-row flex-col gap-10 mt-16">
@@ -69,28 +119,3 @@ import farm from '@/assets/img/habanero-farm.jpeg'
     </div>
   </div>
 </template>
-
-<!-- 
-<script setup>
-import { ref } from 'vue';
-import axios from 'axios';
-
-const formData = ref({ name: '', email: '' });
-const webAppUrl = 'YOUR_WEBAPP_URL'; // Replace with your URL
-
-const submitForm = async () => {
-  try {
-    await axios.post(webAppUrl, new URLSearchParams(formData.value).toString(), {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    });
-    alert('Form submitted successfully!');
-    formData.value = { name: '', email: '' }; // Reset form
-  } catch (error) {
-    console.error('Error submitting form:', error);
-    alert('Failed to submit form.');
-  }
-};
-</script>
--->
